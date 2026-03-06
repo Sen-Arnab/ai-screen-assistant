@@ -33,12 +33,19 @@ cd ai-screen-assistant
 ```
 
 ### 2. Configure AWS Credentials
-Create a `.env` file in the `backend/` directory:
+Copy the example environment file and add your AWS credentials:
 ```bash
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_REGION=us-east-1
+cp backend/.env.example backend/.env
 ```
+
+Then edit `backend/.env` with your AWS credentials:
+```bash
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_actual_access_key
+AWS_SECRET_ACCESS_KEY=your_actual_secret_key
+```
+
+**Note:** You need an AWS account with access to Amazon Bedrock and Claude 3.5 Sonnet model.
 
 ### 3. Install Dependencies
 ```bash
