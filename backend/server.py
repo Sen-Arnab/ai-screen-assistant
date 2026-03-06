@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import boto3
 import json
 import os
 
@@ -14,14 +13,56 @@ except ImportError:
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Bedrock client
-bedrock = boto3.client(
-    service_name='bedrock-runtime',
-    region_name=os.getenv('AWS_REGION', 'us-east-1')
-)
+# LLM Provider Configuration
+LLM_PROVIDER = os.getenv('LLM_PROVIDER', 'bedrock').lower()  # bedrock, openai, anthropic
 
-# Use cross-region inference profile for Claude 3.5 Sonnet
-MODEL_ID = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
+# Initialize based on provider
+if LLM_PROVIDER == 'bedrock':
+    import boto3
+    bedrock = boto3.client(
+        service_name='bedrock-runtime',
+        region_name=os.getenv('AWS_REGION', 'us-east-1')
+    )
+    MODEL_ID = os.getenv('MODEL_ID', 'us.anthropic.claude-3-5-sonnet-20241022-v2:0')
+elif LLM_PROVIDER == 'openai':
+    from openai import OpenAI
+    openai_client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+    MODEL_ID = os.getenv('MODEL_ID', 'gpt-4o')
+elif LLM_PROVIDER == 'anthropic':
+    import anthropic
+    anthropic_client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+    MODEL_ID = os.getenv('MODEL_ID', 'claude-3-5-sonnet-20241022')
+
+def call_llm(messages, temperature=0.7, max_tokens=300):
+    """Universal LLM caller supporting multiple providers"""
+    if LLM_PROVIDER == 'bedrock':
+        body = json.dumps({
+            "anthropic_version": "bedrock-2023-05-31",
+            "max_tokens": max_tokens,
+            "messages": messages,
+            "temperature": temperature
+        })
+        response = bedrock.invoke_model(modelId=MODEL_ID, body=body)
+        response_body = json.loads(response['body'].read())
+        return response_body['content'][0]['text']
+    
+    elif LLM_PROVIDER == 'openai':
+        response = openai_client.chat.completions.create(
+            model=MODEL_ID,
+            messages=[{"role": m["role"], "content": m["content"]} for m in messages],
+            temperature=temperature,
+            max_tokens=max_tokens
+        )
+        return response.choices[0].message.content
+    
+    elif LLM_PROVIDER == 'anthropic':
+        response = anthropic_client.messages.create(
+            model=MODEL_ID,
+            max_tokens=max_tokens,
+            messages=messages,
+            temperature=temperature
+        )
+        return response.content[0].text
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
@@ -37,7 +78,6 @@ def analyze():
         if not text or not question:
             return jsonify({'error': 'Missing text or question'}), 400
         
-        # Prepare prompt
         prompt = f"""Analyze the following text and answer the question concisely (2-3 sentences max):
 
 Text: {text}
@@ -46,28 +86,10 @@ Question: {question}
 
 Provide a brief, direct answer:"""
 
-        print(f"Calling Bedrock with model: {MODEL_ID}")
+        print(f"Calling {LLM_PROVIDER} with model: {MODEL_ID}")
         
-        # Call Bedrock
-        body = json.dumps({
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": max_tokens,
-            "messages": [
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ],
-            "temperature": temperature
-        })
-        
-        response = bedrock.invoke_model(
-            modelId=MODEL_ID,
-            body=body
-        )
-        
-        response_body = json.loads(response['body'].read())
-        answer = response_body['content'][0]['text']
+        messages = [{"role": "user", "content": prompt}]
+        answer = call_llm(messages, temperature, max_tokens)
         
         print(f"Success - Answer length: {len(answer)}")
         return jsonify({'answer': answer})
@@ -89,54 +111,64 @@ def analyze_image():
         image_base64 = data.get('image', '')
         question = data.get('question', '')
         temperature = data.get('temperature', 0.7)
-        max_tokens = data.get('max_tokens', 2000)  # Increased for form analysis
+        max_tokens = data.get('max_tokens', 2000)
         
         if not image_base64 or not question:
             return jsonify({'error': 'Missing image or question'}), 400
         
         print(f"=== IMAGE ANALYSIS REQUEST ===")
-        print(f"Model: {MODEL_ID}")
+        print(f"Provider: {LLM_PROVIDER}, Model: {MODEL_ID}")
         print(f"Question: {question}")
         print(f"Image size: {len(image_base64)} bytes (base64)")
-        print(f"Temperature: {temperature}, Max tokens: {max_tokens}")
         
-        # Call Bedrock with image
-        body = json.dumps({
-            "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": max_tokens,
-            "messages": [
-                {
+        if LLM_PROVIDER == 'bedrock':
+            body = json.dumps({
+                "anthropic_version": "bedrock-2023-05-31",
+                "max_tokens": max_tokens,
+                "messages": [{
                     "role": "user",
                     "content": [
-                        {
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": "image/png",
-                                "data": image_base64
-                            }
-                        },
-                        {
-                            "type": "text",
-                            "text": question
-                        }
+                        {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_base64}},
+                        {"type": "text", "text": question}
                     ]
-                }
-            ],
-            "temperature": temperature
-        })
+                }],
+                "temperature": temperature
+            })
+            response = bedrock.invoke_model(modelId=MODEL_ID, body=body)
+            response_body = json.loads(response['body'].read())
+            answer = response_body['content'][0]['text']
         
-        print(f"Calling Bedrock invoke_model...")
-        response = bedrock.invoke_model(
-            modelId=MODEL_ID,
-            body=body
-        )
+        elif LLM_PROVIDER == 'openai':
+            response = openai_client.chat.completions.create(
+                model=MODEL_ID,
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": question},
+                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{image_base64}"}}
+                    ]
+                }],
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+            answer = response.choices[0].message.content
         
-        response_body = json.loads(response['body'].read())
-        answer = response_body['content'][0]['text']
+        elif LLM_PROVIDER == 'anthropic':
+            response = anthropic_client.messages.create(
+                model=MODEL_ID,
+                max_tokens=max_tokens,
+                messages=[{
+                    "role": "user",
+                    "content": [
+                        {"type": "image", "source": {"type": "base64", "media_type": "image/png", "data": image_base64}},
+                        {"type": "text", "text": question}
+                    ]
+                }],
+                temperature=temperature
+            )
+            answer = response.content[0].text
         
         print(f"✅ Success - Answer length: {len(answer)}")
-        print(f"Answer preview: {answer[:100]}...")
         return jsonify({'answer': answer})
         
     except Exception as e:

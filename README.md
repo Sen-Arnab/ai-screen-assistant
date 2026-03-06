@@ -21,8 +21,10 @@ Always-on-screen AI widget for analyzing selected text and screen content.
 
 - **Node.js** (v14 or higher)
 - **Python 3.8+**
-- **AWS Account** with Bedrock access
-- **AWS CLI** configured with credentials
+- **LLM Provider** - Choose one:
+  - AWS Account with Bedrock access (default)
+  - OpenAI API key
+  - Anthropic API key
 
 ## Setup
 
@@ -32,20 +34,33 @@ git clone https://github.com/Sen-Arnab/ai-screen-assistant.git
 cd ai-screen-assistant
 ```
 
-### 2. Configure AWS Credentials
-Copy the example environment file and add your AWS credentials:
+### 2. Configure AWS Credentials (or other LLM provider)
+Copy the example environment file and add your credentials:
 ```bash
 cp backend/.env.example backend/.env
 ```
 
-Then edit `backend/.env` with your AWS credentials:
+**For AWS Bedrock (default):**
 ```bash
 AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=your_actual_access_key
 AWS_SECRET_ACCESS_KEY=your_actual_secret_key
+LLM_PROVIDER=bedrock
 ```
 
-**Note:** You need an AWS account with access to Amazon Bedrock and Claude 3.5 Sonnet model.
+**For OpenAI:**
+```bash
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_openai_api_key
+MODEL_ID=gpt-4o
+```
+
+**For Anthropic API:**
+```bash
+LLM_PROVIDER=anthropic
+ANTHROPIC_API_KEY=your_anthropic_api_key
+MODEL_ID=claude-3-5-sonnet-20241022
+```
 
 ### 3. Install Dependencies
 ```bash
@@ -150,12 +165,26 @@ To disable auto-start:
 
 ## AI Integration
 
-Uses AWS Bedrock with Claude 3.5 Sonnet via Python Flask backend.
+Supports multiple LLM providers:
 
+### AWS Bedrock (Default)
+Uses AWS Bedrock with Claude 3.5 Sonnet via Python Flask backend.
 - Backend: `backend/server.py` (runs on port 7227)
 - Model: `anthropic.claude-3-5-sonnet-20241022-v2:0`
-- Change model in `backend/server.py` by updating `MODEL_ID`
-- Port 7227 is automatically managed (no conflicts!)
+
+### OpenAI
+Use OpenAI's GPT models (GPT-4o, GPT-4 Turbo, etc.)
+- Set `LLM_PROVIDER=openai` in `backend/.env`
+- Add `OPENAI_API_KEY=your_key` to `backend/.env`
+- Optional: Set `MODEL_ID=gpt-4o` (or other model)
+
+### Anthropic API
+Use Anthropic's Claude models directly via API
+- Set `LLM_PROVIDER=anthropic` in `backend/.env`
+- Add `ANTHROPIC_API_KEY=your_key` to `backend/.env`
+- Optional: Set `MODEL_ID=claude-3-5-sonnet-20241022`
+
+**Configuration:** Edit `backend/.env` to change provider and model. See `backend/.env.example` for all options.
 
 ## Project Structure
 
