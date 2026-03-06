@@ -17,20 +17,49 @@ Always-on-screen AI widget for analyzing selected text and screen content.
 - 🎨 Draggable, customizable interface
 - 💾 Conversation history tracking
 
-## Quick Start
+## Prerequisites
 
-Run the startup script:
+- **Node.js** (v14 or higher)
+- **Python 3.8+**
+- **AWS Account** with Bedrock access
+- **AWS CLI** configured with credentials
+
+## Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/Sen-Arnab/ai-screen-assistant.git
+cd ai-screen-assistant
+```
+
+### 2. Configure AWS Credentials
+Create a `.env` file in the `backend/` directory:
+```bash
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=us-east-1
+```
+
+### 3. Install Dependencies
+```bash
+# Install Node.js dependencies
+npm install
+
+# Python dependencies will be installed automatically on first run
+```
+
+### 4. Run the Application
 ```bash
 ./start.sh
 ```
 
 This will:
 - Setup Python virtual environment (first time only)
-- Install dependencies (first time only)
-- Start Python backend
+- Install Python dependencies (first time only)
+- Start Python backend on port 7227
 - Launch the Electron app
 
-To stop everything:
+### 5. Stop the Application
 ```bash
 ./stop.sh
 ```
