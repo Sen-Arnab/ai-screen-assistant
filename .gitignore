@@ -49,3 +49,6 @@ __pycache__/
 
 # Test files
 test-*.md
+
+# Documentation files
+docs/
