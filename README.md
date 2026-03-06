@@ -75,7 +75,7 @@ To disable auto-start:
 4. Type your question in the widget
 5. Click "Ask" or press Enter
 
-### Text Rewriting ✍️ NEW!
+### Text Rewriting ✍️
 1. Select and copy any text (`Cmd+C`)
 2. Press `Cmd+Shift+A` to capture
 3. Choose a rewriting style:
@@ -85,9 +85,7 @@ To disable auto-start:
    - **✨ Improve Writing** - Fix grammar and enhance readability
 4. Get polished results in seconds!
 
-**See [TEXT-REWRITING-GUIDE.md](TEXT-REWRITING-GUIDE.md) for examples and tips!**
-
-### Developer Tools 👨‍💻 NEW!
+### Developer Tools 👨‍💻
 1. Copy any code (`Cmd+C`)
 2. Press `Cmd+Shift+A` to capture
 3. Choose a developer action:
@@ -99,8 +97,6 @@ To disable auto-start:
    - **📖 Generate Docs** - Create documentation
    - **🔒 Security Scan** - Find vulnerabilities
 4. Get instant developer assistance!
-
-**See [DEVELOPER-FEATURES.md](DEVELOPER-FEATURES.md) for detailed examples!**
 
 ### Google Form Auto-Fill 📋
 1. Open any Google Form, survey, or questionnaire
@@ -115,8 +111,6 @@ To disable auto-start:
    - Suggest well-formatted answers
    - Identify question types (multiple choice, text, etc.)
 5. Review and use the suggested answers
-
-**See [FORM-FILLING-GUIDE.md](FORM-FILLING-GUIDE.md) for detailed instructions and tips!**
 
 ## AI Integration
 
@@ -151,17 +145,3 @@ screen-assistant/
 - **Position**: Drag the widget anywhere on screen
 - **Styling**: Edit `frontend/styles.css` for appearance
 - **Shortcuts**: Modify shortcuts in `frontend/main.js`
-
----
-
-## 📚 Documentation
-
-For detailed information about the form filling feature and other capabilities:
-
-- **[📖 Documentation Index](DOCUMENTATION-INDEX.md)** - Complete guide to all documentation
-- **[🚀 Quick Reference](QUICK-REFERENCE.md)** - Fast start guide with shortcuts
-- **[📋 Form Filling Guide](FORM-FILLING-GUIDE.md)** - Complete form filling instructions
-- **[🔧 Troubleshooting](TROUBLESHOOTING.md)** - Solutions to common problems
-- **[🧪 Testing Guide](TEST-FORM.md)** - How to test the feature
-
-**New to the form filling feature? Start with [QUICK-REFERENCE.md](QUICK-REFERENCE.md)!**
