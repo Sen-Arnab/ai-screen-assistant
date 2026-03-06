@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+backend/venv/
+
+# Environment variables
+backend/.env
+.env
+.env.local
+
+# Logs
+*.log
+backend.log
+startup.log
+startup-error.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+*.app
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Package files
+*.dmg
+*.pkg
+*.deb
+*.rpm
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Test files
+test-*.md

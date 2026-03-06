@@ -1,0 +1,177 @@
+{
+  "assistant": {
+    "name": "Assistant",
+    "emoji": "🤖",
+    "actions": [
+      {
+        "id": "summarize",
+        "name": "Summarize",
+        "prompt": "Summarize this text in 2-3 sentences",
+        "icon": "📝",
+        "type": "analyze"
+      },
+      {
+        "id": "explain",
+        "name": "Explain",
+        "prompt": "Explain this in simple terms",
+        "icon": "💡",
+        "type": "analyze"
+      },
+      {
+        "id": "improve",
+        "name": "Improve Writing",
+        "prompt": "Improve the writing and grammar",
+        "icon": "✨",
+        "type": "analyze"
+      },
+      {
+        "id": "professional",
+        "name": "Rewrite Professionally",
+        "prompt": "Rewrite this text in a professional, polished manner. Transform casual language into formal business communication. Improve clarity, structure, and tone while maintaining the original meaning. Use professional vocabulary, proper grammar, and clear sentence structure. Make it suitable for business emails, reports, or formal documents.",
+        "icon": "💼",
+        "type": "analyze"
+      },
+      {
+        "id": "concise",
+        "name": "Make Concise",
+        "prompt": "Rewrite this text to be more concise and direct. Remove unnecessary words, redundancies, and filler. Keep only the essential information. Make it clear, brief, and impactful while preserving the core message.",
+        "icon": "✂️",
+        "type": "analyze"
+      },
+      {
+        "id": "friendly",
+        "name": "Make Friendly",
+        "prompt": "Rewrite this text in a warm, friendly, and approachable tone. Make it conversational yet professional. Add warmth and personality while maintaining clarity and respect. Perfect for customer communications or team messages.",
+        "icon": "😊",
+        "type": "analyze"
+      },
+      {
+        "id": "code",
+        "name": "Explain Code",
+        "prompt": "Explain what this code does",
+        "icon": "💻",
+        "type": "analyze"
+      },
+      {
+        "id": "code-review",
+        "name": "Review Code",
+        "prompt": "Review this code for:\n1. Security vulnerabilities (SQL injection, XSS, etc.)\n2. Performance issues and bottlenecks\n3. Best practices and design patterns\n4. Code smells and maintainability\n5. Potential bugs and edge cases\n\nProvide specific, actionable suggestions with code examples.",
+        "icon": "🔍",
+        "type": "analyze"
+      },
+      {
+        "id": "generate-tests",
+        "name": "Generate Tests",
+        "prompt": "Generate comprehensive unit tests for this code:\n1. Happy path tests\n2. Edge cases and boundary conditions\n3. Error scenarios and exception handling\n4. Mock setup if needed\n\nUse Jest/Mocha syntax with proper assertions and descriptive test names.",
+        "icon": "🧪",
+        "type": "analyze"
+      },
+      {
+        "id": "optimize-code",
+        "name": "Optimize Code",
+        "prompt": "Optimize this code for:\n1. Performance (reduce time complexity)\n2. Memory usage (reduce space complexity)\n3. Readability and maintainability\n4. Modern best practices\n\nProvide the optimized version with explanations of improvements.",
+        "icon": "⚡",
+        "type": "analyze"
+      },
+      {
+        "id": "explain-error",
+        "name": "Debug Error",
+        "prompt": "Analyze this error or stack trace:\n1. What went wrong? (root cause)\n2. Why did it happen? (explanation)\n3. How to fix it? (solution with code)\n4. How to prevent it? (best practices)\n\nProvide specific code examples for the fix.",
+        "icon": "🐛",
+        "type": "analyze"
+      },
+      {
+        "id": "git-commit",
+        "name": "Commit Message",
+        "prompt": "Generate a conventional commit message for these changes:\n\nFormat: type(scope): description\n\nTypes: feat, fix, docs, style, refactor, test, chore\n\nInclude:\n- What changed (concise description)\n- Why it changed (reasoning)\n- Any breaking changes\n\nKeep it under 72 characters for the first line.",
+        "icon": "📝",
+        "type": "analyze"
+      },
+      {
+        "id": "generate-docs",
+        "name": "Generate Docs",
+        "prompt": "Generate comprehensive documentation for this code:\n1. Function/class description\n2. Parameters with types and descriptions\n3. Return value with type\n4. Usage examples\n5. Edge cases and notes\n\nUse JSDoc/docstring format appropriate for the language.",
+        "icon": "📖",
+        "type": "analyze"
+      },
+      {
+        "id": "security-scan",
+        "name": "Security Scan",
+        "prompt": "Perform a security audit of this code:\n1. SQL injection vulnerabilities\n2. XSS (Cross-Site Scripting) risks\n3. Authentication/authorization issues\n4. Sensitive data exposure\n5. Input validation problems\n6. Dependency vulnerabilities\n\nProvide specific fixes with secure code examples.",
+        "icon": "🔒",
+        "type": "analyze"
+      },
+      {
+        "id": "run-command",
+        "name": "Run in Terminal",
+        "prompt": "Extract and format the command to run in terminal",
+        "icon": "⚡",
+        "type": "command"
+      },
+      {
+        "id": "custom",
+        "name": "Custom Question",
+        "prompt": "",
+        "icon": "❓",
+        "type": "analyze"
+      }
+    ],
+    "savedCommands": [
+      {
+        "category": "AE",
+        "commands": [
+          {
+            "id": "new-agent",
+            "name": "New Agent",
+            "command": "cd ~/repo/ae && gdev region us-east-1 && gdev start",
+            "icon": "🚀"
+          },
+          {
+            "id": "release-agent",
+            "name": "Release Agent",
+            "command": "cd ~/repo/ae && gdev release",
+            "icon": "📦"
+          },
+          {
+            "id": "restart-webapp",
+            "name": "Restart WebApp",
+            "command": "cd ~/repo/ae && gdev restart webapp",
+            "icon": "🔄"
+          },
+          {
+            "id": "change-region-east",
+            "name": "Set Region: US East 1",
+            "command": "cd ~/repo/ae && gdev region us-east-1",
+            "icon": "🌍"
+          },
+          {
+            "id": "change-region-west",
+            "name": "Set Region: US West 2",
+            "command": "cd ~/repo/ae && gdev region us-west-2",
+            "icon": "🌍"
+          },
+          {
+            "id": "ae-status",
+            "name": "AE Status",
+            "command": "cd ~/repo/ae && gdev status",
+            "icon": "📊"
+          },
+          {
+            "id": "ae-logs",
+            "name": "View Logs",
+            "command": "cd ~/repo/ae && gdev logs",
+            "icon": "📜"
+          }
+        ]
+      }
+    ],
+    "settings": {
+      "maxTokens": 2000,
+      "temperature": 0.7,
+      "autoExpand": true,
+      "opacity": 0.95,
+      "defaultLanguage": "auto",
+      "autoDetectForms": true
+    }
+  }
+}
